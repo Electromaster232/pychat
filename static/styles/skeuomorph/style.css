@@ -1,0 +1,233 @@
+/*
+
+	Made by Alexande- who the fuck cares?
+
+*/
+
+* {
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+html,body {
+	height: 100%;
+	width: 100%;
+	background: #ccc;
+	color: #666;
+	font-family: Arial;
+	font-size: 16px;
+}
+
+*:focus {
+	outline: none;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: none;
+}
+
+::-webkit-scrollbar-thumb {
+	width: 20px;
+    background-color: #666666;
+}
+
+#main {
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+}
+
+#sideBar {
+	float: left;
+	height: 100%;
+	width: 250px;
+	margin-right: 10px;
+    border-radius: 15px;
+	border: 1px solid #585858;
+}
+
+#chatWindow {
+	height: 100%;
+	border: 1px solid #585858;
+    border-radius: 15px;
+}
+
+#chatBox {
+	background: none;
+	color: #444444;
+	height: 35px;
+	width: calc(100% - 270px);
+	border-style: solid;
+	border-color: #585858;
+	border-width: 0 0 0 0;
+	padding-left: 10px;
+	padding-right: 10px;
+	position: absolute;
+	left: 265px;
+	bottom: 5px;
+	font-size: 20px;
+}
+
+input[type=submit] {
+    visibility: hidden;
+}
+
+#channel {
+	height: 45px;
+	width: 100%;
+	border-style: solid;
+	border-color: #585858;
+	border-width: 0 0 1px 0;
+    background: rgb(248,253,255);
+    background: linear-gradient(180deg, rgba(248,253,255,1) 0%, rgba(185,236,255,1) 22%, rgba(134,213,255,1) 49%, rgba(100,171,255,1)           50%, rgba(101,197,255,1) 100%);
+	font-size: 23px;
+	line-height: 40px;
+}
+
+.hashtag {
+	float: left;
+	width: 34px;
+	color: gray;
+	font-style: italic;
+	font-size: 23px;
+    padding-top: 3px;
+	padding-left: 17px;
+	padding-right: 10px;
+	user-select: none;
+}
+
+#logo {
+	height: 45px;
+	width: 100%;
+	border-style: solid;
+	border-color: #585858;
+	border-width: 0 0 1px 0;
+	font-size: 28px;
+	padding-left: 10px;
+	padding-right: 10px;
+    background: linear-gradient(180deg, rgba(248,253,255,1) 0%, rgba(185,236,255,1) 22%, rgba(134,213,255,1) 49%, rgba(100,171,255,1)           50%, rgba(101,197,255,1) 100%);
+	white-space: nowrap;
+	user-select: none;
+}
+
+#userInfo {
+	height: 45px;
+	width: 240px;
+	border-style: solid;
+	border-color: white;
+	border-width: 0 0 0 0;
+	padding-left: 10px;
+	padding-right: 10px;
+	position: absolute;
+	bottom: 5px;
+	font-size: 24px;
+	line-height: 40px;
+}
+
+#chat {
+	height: calc(100% - 90px);
+    background: url('https://raw.githubusercontent.com/324Luke/pychat-themes/master/Skeuomorph/texture.png');
+	width: 100%;
+	padding: 10px 5px 5px 10px;
+}
+
+.message {
+	height: 30px;
+	width: 100%;
+	overflow: visible;
+}
+
+.userName {
+	float: left;
+    position: relative;
+    overflow: visible;
+}
+
+.arrow {
+	float: left;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.messageContent {
+	float: left;
+	width: auto;
+}
+
+#info {
+	height: calc(100% - 90px);
+	width: 100%;
+}
+
+#channelSwitcher {
+	height: 45px;
+	width: 250px;
+	background-color: navy;
+	color: white;
+	border-style: solid;
+	border-width: 0 0 0 0;
+	font-size: 24px;
+	line-height: 40px;
+	padding-left: 35px;
+	padding-right: 10px;
+}
+
+#channelSwitcher + .hashtag {
+	position: relative;
+	bottom: 46px;
+	right: 1px;
+	float: none;
+}
+
+#connection {
+	height: calc(100% - 45px);
+	width: 250px;
+    background: url('https://raw.githubusercontent.com/324Luke/pychat-themes/master/Skeuomorph/texture.png');
+    background-repeat: repeat;
+	position: relative;
+	bottom: 37px;
+	padding-left: 10px;
+	padding-top: 5px;
+	font-size: 22px;
+}
+
+.REE {
+	float: left;
+	padding-right: 10px;
+}
+
+.pingedMessage {
+    background-color: #dd4444;
+    border-radius: 5px;
+}
+
+.timestamp {
+    visibility: hidden;
+    width: auto;
+    background-color: white;
+    color: #000;
+    text-align: center;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    margin-left: -50px;
+    font-size: 18px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    white-space: nowrap;
+    z-index: 100;
+    padding: 0px 10px 0 10px;
+}
+
+.userName:hover .timestamp {
+    visibility: visible;
+}
+

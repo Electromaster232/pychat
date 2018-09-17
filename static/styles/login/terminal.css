@@ -1,0 +1,70 @@
+@font-face {
+	font-family: Fixedsys;
+	src: url(../../fonts/fixedsys.ttf);
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+*:focus {
+	outline: none;
+}
+
+html,body {
+	height: 100%;
+	width: 100%;
+	background: black;
+	color: white;
+	font-family: fixedsys;
+	font-size: 20px;
+	border: 5px white solid;
+}
+
+#login {
+	width: 600px;
+	height: 300px;
+	border: 5px white solid;
+}
+
+#header {
+	height: 45px;
+	width: 100%;
+	border-style: solid;
+	border-color: white;
+	border-width: 0 0 5px 0;
+	font-size: 26px;
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+#loginField {
+	height: calc(100% - 45px);
+	width: 100%;
+	padding-top: 25px;
+}
+
+#loginField div {
+	padding-left: 10px;
+}
+
+input,form {
+	height: 45px;
+	width: 100%;
+	background-color: black;
+	color: white;
+	border-style: solid;
+	border-color: white;
+	border-width: 5px 0 5px 0;
+	padding-left: 10px;
+}
+
+#userName {
+	margin-bottom: 25px;
+}

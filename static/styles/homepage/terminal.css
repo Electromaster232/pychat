@@ -1,0 +1,77 @@
+@font-face {
+	font-family: Fixedsys;
+	src: url(../../fonts/fixedsys.ttf);
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+html,body {
+	height: 100%;
+	width: 100%;
+	background: black;
+	color: white;
+	font-family: Fixedsys;
+	font-size: 20px;
+}
+
+*:focus {
+	outline: none;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: black;
+}
+ 
+::-webkit-scrollbar-thumb {
+	width: 20px;
+    background-color: white; 
+}
+
+#header {
+	font-family: Fixedsys;
+	font-size: 100px;
+}
+
+.line {
+      position: relative;
+      top: 50%;
+      width: 16em;
+      margin: 0 auto;
+      border-right: 2px solid rgba(255, 255, 255, 0.75);
+      font-size: 180%;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+	  transform: translateY(-50%);
+}
+ 
+.typing {
+      animation: typing 1s steps(6) 1s 1 normal both,
+      blinkTextCursor 700ms steps(2) infinite normal;
+}
+ 
+@keyframes typing {
+      from {
+            width: 0;
+      }
+      to {
+            width: 300px;
+      }
+}
+ 
+@keyframes blinkTextCursor {
+      from {
+            border-right-color: rgba(255, 255, 255, 0.75);
+      }
+      to {
+            border-right-color: transparent;
+      }
+}

@@ -1,0 +1,230 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu');
+
+
+
+* {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+html,body {
+    height: 100%;
+    width: 100%;
+    background: url(https://i.imgur.com/8FncLq2.jpg);
+    color: white;
+    text-shadow: 2px 2px black;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 20px;
+}
+
+*:focus {
+    outline: none;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #454545;
+    opacity: 0.5;
+}
+
+::-webkit-scrollbar-thumb {
+    width: 20px;
+    opacity: 0.5;
+    background-color: #999999;
+}
+
+.biggay input[type="submit"] {
+    visibility: hidden;
+}
+
+#main {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+#sideBar {
+    border: none;
+    float: left;
+    height: 100%;
+    width: 249px;
+    margin-right: 10px;
+    opacity: 0.5;
+    background: black;
+}
+
+#chatWindow {
+    height: 100%;
+    border: none;
+}
+
+#chatBox {
+    opacity: 0.5;
+    background: black;
+    color: white;
+    height: 45px;
+    width: calc(100% - 251px);
+    border: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+    position: absolute;
+    left: 249px;
+    bottom: 0px;
+    font-size: 24px;
+}
+
+#channel {
+    height: 45px;
+    width: 100%;
+    font-size: 28px;
+    line-height: 40px;
+    border: none;
+}
+
+.hashtag {
+    float: left;
+    width: 34px;
+    color: gray;
+    font-style: italic;
+    font-size: 28px;
+    padding-left: 10px;
+    padding-right: 10px;
+    user-select: none;
+}
+
+#logo {
+    height: 45px;
+    width: 100%;
+    font-size: 28px;
+    padding-left: 10px;
+    padding-right: 10px;
+    white-space: nowrap;
+    user-select: none;
+    border: none;
+}
+
+#userInfo {
+    height: 45px;
+    width: 240px;
+    border-style: solid;
+    border-color: white;
+    border-width: 0px 0 0 0;
+    padding-left: 10px;
+    padding-right: 10px;
+    position: absolute;
+    bottom: 5px;
+    font-size: 24px;
+    line-height: 40px;
+}
+
+#chat {
+    height: calc(100% - 90px);
+    width: 100%;
+    padding: 10px 5px 5px 10px;
+}
+
+.message {
+    height: 30px;
+    width: 100%;
+    overflow: visible;
+}
+
+.userName {
+    float: left;
+    position: relative;
+    overflow: visible;
+}
+
+.arrow {
+    float: left;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.messageContent {
+    float: left;
+    width: auto;
+}
+
+#ip {
+    font-size: 18px;
+}
+
+#info {
+    height: calc(100% - 90px);
+    width: 100%;
+}
+
+#channelSwitcher {
+    height: 45px;
+    width: 240px;
+    background: black;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    border: none;
+    color: white;
+    font-size: 18px;
+    line-height: 40px;
+    padding-left: 35px;
+    padding-right: 10px;
+}
+
+#channelSwitcher + .hashtag {
+    position: relative;
+    bottom: 46px;
+    right: 1px;
+    float: none;
+}
+
+#connection {
+    height: calc(100% - 45px);
+    width: 240px;
+    position: relative;
+    bottom: 42px;
+    padding-left: 10px;
+    padding-top: 10px;
+    font-size: 22px;
+}
+
+.REE {
+    float: left;
+    padding-right: 10px;
+}
+
+.pingedMessage {
+    background: black;
+    opacity: 0.5;
+    border-radius: 6px;
+}
+
+.timestamp {
+    visibility: hidden;
+    width: auto;
+    background-color: black;
+    color: white;
+    text-shadow: none;
+    text-align: center;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 30px;
+    left: 50px;
+    margin-left: -50px;
+    font-size: 18px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    white-space: nowrap;
+    z-index: 100;
+    padding: 0px 10px 0 10px;
+}
+
+.userName:hover .timestamp {
+    visibility: visible;
+}
+
