@@ -14,7 +14,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'odL1}0a=}E:ybjfY.%rH"Ys5?6;J<^'
 socketio = SocketIO(app)
 
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/")
 def home():
     return render_template("index.html")
 
@@ -29,7 +29,10 @@ def chanswitch():
     if request.method == "GET":
         return "Invalid Request."
     if request.method == "POST":
-        return redirect("/chat/" + request.form['channel'])
+        if "g-" in request.form['channel']:
+            return redirect("/group/" + request.form['channel'].strip('g').strip('-'))
+        else:
+            return redirect("/chat/" + request.form['channel'])
 
 
 
@@ -64,6 +67,19 @@ def chatembed(channel):
         key = random.getrandbits(10)
         return render_template("chat.html", channel=channel, username=users[0][0], key=key, ip=request.environ['REMOTE_ADDR'])
 
+@app.route("/group/<string:channel>", methods=['GET', 'POST'])
+def groupchat(channel):
+    token = request.cookies.get("pychatToken")
+    users = query("SELECT * FROM users WHERE token = %s", [token])
+    if not users:
+        return "Sorry, but that token is invalid."
+    try:
+         if users[0][0] in query("SELECT * FROM privatechannels WHERE channame = %s", [channel])[0][2]:
+             key = random.getrandbits(10)
+             return render_template("chat.html", channel=channel, username=users[0][0], key=key,
+                               ip=request.environ['REMOTE_ADDR'])
+    except IndexError:
+        return "Sorry idiot but you're not allowed to access this chat room."
 
 # Login
 @app.route("/login", methods=['GET', 'POST'])
