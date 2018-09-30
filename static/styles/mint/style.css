@@ -1,14 +1,11 @@
-@font-face {
-	font-family: Dosis;
-	src: url('https://fonts.googleapis.com/css?family=Dosis');
-}
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
 html,body {
-	font-family: "Dosis";
+	font-family: "Open Sans";
 }
 
 #main {
-  font-family: "Dosis";
+  font-family: "Open Sans";
   background-color: #2C2F33;
 }
 
@@ -47,7 +44,7 @@ html,body {
 	width: 100%;
 	background: #2C2F33;
 	color: white;
-	font-family: Dosis;
+	font-family: Open Sans;
 	font-size: 20px;
 }
 
