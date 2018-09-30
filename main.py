@@ -39,7 +39,10 @@ def chanswitch():
 # Send messages from previous chat sessions
 @socketio.on("getprevmsg")
 def send_prev_msg(json, methods=['GET', 'POST']):
-    msgs = query("SELECT * FROM messages WHERE channel = %s ORDER BY id DESC LIMIT 15;", [json['channel']])
+    if json['group'] == "yes":
+          msgs = query("SELECT * FROM privatemessages WHERE channel = %s ORDER BY id DESC LIMIT 15;", [json['channel']])
+    else:
+          msgs = query("SELECT * FROM messages WHERE channel = %s ORDER BY id DESC LIMIT 15;", [json['channel']])
     key = json['key']
     for r in msgs[::-1]:
         json2 = {}
@@ -57,6 +60,18 @@ def send_prev_msg(json, methods=['GET', 'POST']):
 
 
 # Return chat window
+
+@app.route("/m/chat/<string:channel>", methods=['GET', 'POST'])
+def chatembedmobile(channel):
+    token = request.cookies.get("pychatToken")
+    users = query("SELECT * FROM users WHERE token = %s", [token])
+    if not users:
+        return "Sorry, but that token is invalid."
+    if request.method == "GET":
+        key = random.getrandbits(10)
+        return render_template("pychatmobile.html", channel=channel, username=users[0][0], key=key, group="no")
+
+
 @app.route("/chat/<string:channel>", methods=['GET', 'POST'])
 def chatembed(channel):
     token = request.cookies.get("pychatToken")
@@ -65,7 +80,7 @@ def chatembed(channel):
         return "Sorry, but that token is invalid."
     if request.method == "GET":
         key = random.getrandbits(10)
-        return render_template("chat.html", channel=channel, username=users[0][0], key=key, ip=request.environ['REMOTE_ADDR'])
+        return render_template("chat.html", channel=channel, username=users[0][0], key=key, ip=request.environ['REMOTE_ADDR'], group="no")
 
 @app.route("/group/<string:channel>", methods=['GET', 'POST'])
 def groupchat(channel):
@@ -77,9 +92,24 @@ def groupchat(channel):
          if users[0][0] in query("SELECT * FROM privatechannels WHERE channame = %s", [channel])[0][2]:
              key = random.getrandbits(10)
              return render_template("chat.html", channel=channel, username=users[0][0], key=key,
-                               ip=request.environ['REMOTE_ADDR'])
+                               ip=request.environ['REMOTE_ADDR'], group="yes")
     except IndexError:
         return "Sorry idiot but you're not allowed to access this chat room."
+
+@app.route("/m/group/<string:channel>", methods=['GET', 'POST'])
+def groupchatmobile(channel):
+    token = request.cookies.get("pychatToken")
+    users = query("SELECT * FROM users WHERE token = %s", [token])
+    if not users:
+        return "Sorry, but that token is invalid."
+    try:
+         if users[0][0] in query("SELECT * FROM privatechannels WHERE channame = %s", [channel])[0][2]:
+             key = random.getrandbits(10)
+             return render_template("pychatmobile.html", channel=channel, username=users[0][0], key=key,
+                               ip=request.environ['REMOTE_ADDR'], group="yes")
+    except IndexError:
+        return "Sorry idiot but you're not allowed to access this chat room."
+
 
 # Login
 @app.route("/login", methods=['GET', 'POST'])
@@ -125,7 +155,10 @@ def handle_chat(json, methods=['GET', 'POST']):
     content = content.strip("`")
     if content.isspace() or content == "":
         return
-    query("INSERT INTO messages (content, author, channel) VALUES (%s,%s,%s);", (content, author, channel))
+    if json['group'] == "yes":
+         query("INSERT INTO privatemessages (content, author, channel) VALUES (%s,%s,%s);", (content, author, channel))
+    else:
+         query("INSERT INTO messages (content, author, channel) VALUES (%s,%s,%s);", (content, author, channel))
     content = content.replace("/shrug", " ¯\\\_(ツ)_/¯")
     json['message'] = markdown.markdown(content)
     socketio.emit("chatrecieve", json)
@@ -198,7 +231,10 @@ def joinree(json):
     json2['channel'] = channel
     json2['key'] = json['key']
     socketio.emit("userconn", json2)
-    joined[users[0][0]] = channel
+    try:
+         joined[users[0][0]] = channel
+    except KeyError:
+         pass
     for r in joined:
         user2 = query("SELECT * FROM users WHERE nickname = %s", [r])
         json3 = {}
@@ -219,7 +255,10 @@ def leave():
     user = request.cookies.get("pychatToken")
     user = query("SELECT * FROM users WHERE token = %s", [user])
     print(user[0][0])
-    del joined[user[0][0]]
+    try:
+         del joined[user[0][0]]
+    except KeyError:
+         pass
     json = {}
     json['author'] = user[0][0]
     json['channel'] = channel

@@ -23,7 +23,8 @@
 				<div id="connection">
 					<div id="ping">NaN<div class="REE">Latency:</div></div>
 					<div id="ip">{{ ip }}<div class="REE">IP:</div></div>
-                    <a href="/logout">Logout</a>
+                    <a href="/logout">Logout</a> <br />
+                    <a href="/m/chat/general">Switch to Mobile</a>
                     <div style="margin-top: 40px;">Theme:</div>
                     <select id="coverageSelector">
                         <option value="terminal">Terminal</option>
@@ -71,7 +72,8 @@
   function sendprevmsg(){
       socket.emit( 'getprevmsg', {
           channel : "{{ channel }}",
-          key : "{{ key }}"
+          key : "{{ key }}",
+          group: "{{ group }}"
       } )
   }
 
@@ -85,7 +87,8 @@
       socket.emit( 'chatsend', {
         user_name : "{{ username }}",
         message : user_input,
-        channel : "{{ channel }}"
+        channel : "{{ channel }}",
+        group : "{{ group }}"
       } )
       $( 'input#chatBox' ).val( '' ).focus()
     } );
