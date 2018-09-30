@@ -9,6 +9,8 @@ import time
 from passlib.context import CryptContext
 import secrets
 import re
+from config import Config
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'odL1}0a=}E:ybjfY.%rH"Ys5?6;J<^'
@@ -287,10 +289,10 @@ def check_encrypted_password(password, hashed):
 
 
 if __name__ == '__main__':
-    conn = MySQLdb.connect(host="cpanel.theendlessweb.com",  # your host, usually localhost
-                         user="",  # your username
-                         passwd="",  # your password
-                         db="")
+    conn = MySQLdb.connect(host=Config.host,  # your host, usually localhost
+                         user=Config.user,  # your username
+                         passwd=Config.passwd,  # your password
+                         db=Config.db)
     random.seed()
     pwd_context = CryptContext(
         schemes=["pbkdf2_sha256"],
