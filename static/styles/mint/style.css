@@ -3,6 +3,10 @@
 	src: url('https://fonts.googleapis.com/css?family=Dosis');
 }
 
+html,body {
+	font-family: dosis;
+}
+
 #main {
   font-family: "Dosis";
   background-color: #2C2F33;
