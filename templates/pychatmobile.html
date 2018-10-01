@@ -30,13 +30,13 @@
 </div>
 <script type="text/javascript">
 	$('.dabblox').click(function(){
-		var thotbox = prompt("Enter the channel to switch to");
-		if(thotbox != null){
-			if(thotbox.indexOf("g-") !== -1){
-				window.location.href = "https://" + document.domain + "/m/group/" + thotbox.replace("g", "").replace("-", "");
+		var new_chan = prompt("Enter the channel to switch to");
+		if(new_chan != null){
+			if(new_chan.indexOf("g-") !== -1){
+				window.location.href = "https://" + document.domain + "/m/group/" + new_chan.replace("g", "").replace("-", "");
 		}
 			else{
-				window.location.href = "https://" + document.domain + "/m/chat/" + thotbox;
+				window.location.href = "https://" + document.domain + "/m/chat/" + new_chan;
 		}
 		}
     });
