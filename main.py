@@ -66,7 +66,7 @@ def send_prev_msg(json, methods=['GET', 'POST']):
 @app.route("/m/chat/<string:channel>", methods=['GET', 'POST'])
 def chatembedmobile(channel):
     if "g-" in channel:
-        return redirect("/chat/"+channel[2:-0])
+        return redirect("/chat/"+channel.replace("g-", ""))
     token = request.cookies.get("pychatToken")
     users = query("SELECT * FROM users WHERE token = %s", [token])
     if not users:
@@ -79,7 +79,7 @@ def chatembedmobile(channel):
 @app.route("/chat/<string:channel>", methods=['GET', 'POST'])
 def chatembed(channel):
     if "g-" in channel:
-        return redirect("/chat/"+channel[2:-0])
+        return redirect("/chat/"+channel.replace("g-", ""))
     token = request.cookies.get("pychatToken")
     users = query("SELECT * FROM users WHERE token = %s", [token])
     if not users:
