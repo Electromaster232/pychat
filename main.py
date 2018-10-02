@@ -93,7 +93,7 @@ def groupchat(channel):
     try:
          if users[0][0] in query("SELECT * FROM privatechannels WHERE channame = %s", [channel])[0][2]:
              key = random.getrandbits(10)
-             return render_template("chat.html", channel=channel, username=users[0][0], key=key,
+             return render_template("chat.html", channel="g-"+channel, username=users[0][0], key=key,
                                ip=request.environ['REMOTE_ADDR'], group="yes")
     except IndexError:
         return "Sorry idiot but you're not allowed to access this chat room."
@@ -107,7 +107,7 @@ def groupchatmobile(channel):
     try:
          if users[0][0] in query("SELECT * FROM privatechannels WHERE channame = %s", [channel])[0][2]:
              key = random.getrandbits(10)
-             return render_template("pychatmobile.html", channel=channel, username=users[0][0], key=key,
+             return render_template("pychatmobile.html", channel="g-"+channel, username=users[0][0], key=key,
                                ip=request.environ['REMOTE_ADDR'], group="yes")
     except IndexError:
         return "Sorry idiot but you're not allowed to access this chat room."
