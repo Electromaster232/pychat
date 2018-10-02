@@ -68,7 +68,7 @@ def chatembedmobile(channel):
     token = request.cookies.get("pychatToken")
     users = query("SELECT * FROM users WHERE token = %s", [token])
     if not users:
-        return "Sorry, but that token is invalid."
+        return redirect("/login")
     if request.method == "GET":
         key = random.getrandbits(10)
         return render_template("pychatmobile.html", channel=channel, username=users[0][0], key=key, group="no")
@@ -79,7 +79,7 @@ def chatembed(channel):
     token = request.cookies.get("pychatToken")
     users = query("SELECT * FROM users WHERE token = %s", [token])
     if not users:
-        return "Sorry, but that token is invalid."
+        return redirect("/login")
     if request.method == "GET":
         key = random.getrandbits(10)
         return render_template("chat.html", channel=channel, username=users[0][0], key=key, ip=request.environ['REMOTE_ADDR'], group="no")
@@ -89,7 +89,7 @@ def groupchat(channel):
     token = request.cookies.get("pychatToken")
     users = query("SELECT * FROM users WHERE token = %s", [token])
     if not users:
-        return "Sorry, but that token is invalid."
+        return redirect("/login")
     try:
          if users[0][0] in query("SELECT * FROM privatechannels WHERE channame = %s", [channel])[0][2]:
              key = random.getrandbits(10)
@@ -103,7 +103,7 @@ def groupchatmobile(channel):
     token = request.cookies.get("pychatToken")
     users = query("SELECT * FROM users WHERE token = %s", [token])
     if not users:
-        return "Sorry, but that token is invalid."
+        return redirect("/login")
     try:
          if users[0][0] in query("SELECT * FROM privatechannels WHERE channame = %s", [channel])[0][2]:
              key = random.getrandbits(10)
