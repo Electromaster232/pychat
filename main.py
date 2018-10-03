@@ -241,14 +241,15 @@ def joinree(json):
          joined[users[0][0]] = channel
     except KeyError:
          pass
-    for r in joined:
+    for r, v in joined.items():
         user2 = query("SELECT * FROM users WHERE nickname = %s", [r])
         json3 = {}
+        print("Sent user" + r)
         json3['key'] = json['key']
         if user2[0][6] == "yes":
               json3['staff'] = "yes"
         json3['author'] = r
-        json3['channel'] = json['channel']
+        json3['channel'] = v
         socketio.emit("userconn", json3)
 
 
