@@ -13,7 +13,7 @@
 		<title>PyChat | #{{ channel }}</title>
 		
 	</head>
-	<body id="main" class="w3-row" onbeforeunload="socket.emit('leave', {});">
+	<body id="main" class="w3-row" onbeforeunload="socket.emit('leave', {'channel' : '{{ channel }}'});">
 		<div id="sideBar">
 			<div id="logo">PyChat v0.5</div>
 			<div id="info">

@@ -254,11 +254,9 @@ def joinree(json):
 
 
 # When a user leaves :(
-@socketio.on("disconnect")
-def leave():
+@socketio.on("leave")
+def leave(json2):
     print("Disconnecc")
-    channel = re.findall(r"(http[s]?:\/\/)?([^\/\s]+\/)(.*)", request.referrer)
-    channel = channel[0][2][5:]
     user = request.cookies.get("pychatToken")
     user = query("SELECT * FROM users WHERE token = %s", [user])
     print(user[0][0])
@@ -268,7 +266,7 @@ def leave():
          pass
     json = {}
     json['author'] = user[0][0]
-    json['channel'] = channel
+    json['channel'] = json2['channel']
     socketio.emit("userdiss", json)
 
 # Misc Functions
