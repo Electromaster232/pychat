@@ -177,6 +177,8 @@ def signup():
     if request.method == "GET":
         return render_template("signup.html")
     if request.method == "POST":
+        if not request.form['password'] and request.form['email'] and request.form['username']:
+            return "Sorry, but you're missing something. Go back and try again"
         encryptedpassword = encrypt_password(request.form['password'])
         token = secrets.token_hex(20)
         username = request.form['username'].replace("<", "")
