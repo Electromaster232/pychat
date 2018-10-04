@@ -14,7 +14,7 @@
 <title>PyChat Mobile - #{{ channel }}</title>
 </head>
 
-<body onbeforeunload="socket.emit('leave', {});">
+<body onbeforeunload="socket.emit('leave', {'channel' : '{{ channel }}'});">
 	<div id="chatWindow" class="w3-rest">
 	  <div class="dabblox" id="channel" style=""><div class="hashtag">#</div>{{ channel }}<i id="chanswitch" style="font-size: 20px; margin-top: 6px; margin-left: 16px" class="fa fa-cog" aria-hidden="true"></i></div>
 				<div class="chat" id="chat" style="overflow-y: scroll;">
