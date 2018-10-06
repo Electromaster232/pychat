@@ -4,7 +4,8 @@
 }
 
 html,body {
-	font-family: "Dosis";
+	font-family: "Dosis", sans-serif;
+	font-weight: bold;
 }
 
 #main {
@@ -33,7 +34,7 @@ html,body {
 }
 
 #channel {
-  color: #FFFFFF";
+  color: #FFFFFF;
 }
 
 * {
