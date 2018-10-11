@@ -172,7 +172,7 @@
         //if(url.match(/\.(jpeg|jpg|gif|png)$/) != null) {
         //    $( 'div#chat' ).append( "<img src="+url+">" );
         //}
-        return '<a href="' + url + '" target="_blank">' + url + '</a>';
+        return '<a href="' + encodeURI(url) + '" target="_blank">' + url + '</a>';
     })
     // or alternatively
     // return text.replace(urlRegex, '<a href="$1">$1</a>')
