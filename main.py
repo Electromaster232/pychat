@@ -179,10 +179,13 @@ def signup():
     if request.method == "POST":
         if not request.form['password'] and request.form['email'] and request.form['username']:
             return "Sorry, but you're missing something. Go back and try again"
-        encryptedpassword = encrypt_password(request.form['password'])
-        token = secrets.token_hex(20)
         username = request.form['username'].replace("<", "")
         username = username.replace(">", "")
+        iftehuser = query("SELECT * FROM users WHERE nickname = %s", [username])
+        if username in iftehuser:
+            return "Sorry, someone already has that username. Go back and pick another"
+        encryptedpassword = encrypt_password(request.form['password'])
+        token = secrets.token_hex(20)
         email = request.form['email']
         query("INSERT INTO users (nickname, password, token, email, muted) VALUES (%s,%s,%s,%s,\"no\")", (username, encryptedpassword, token, email))
         resp = make_response(redirect("/chat/general"))
