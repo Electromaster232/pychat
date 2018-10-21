@@ -128,6 +128,7 @@
 
   socket.on( 'chatrecieve', function( msg ) {
     console.log("Recieved msg.")
+    console.log(msg.message)
     if( typeof msg.message !== 'undefined' ) {
       $( 'p.none').remove();
       var mesg = urlify(msg.message);

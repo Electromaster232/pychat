@@ -10,6 +10,7 @@ from passlib.context import CryptContext
 import secrets
 import re
 from config import Config
+import pymdownx.emoji
 
 
 app = Flask(__name__)
@@ -48,7 +49,7 @@ def send_prev_msg(json, methods=['GET', 'POST']):
     key = json['key']
     for r in msgs[::-1]:
         json2 = {}
-        json2['message'] = markdown.markdown(r[0], extensions=['pymdownx.tilde', 'pymdownx.emoji'])
+        json2['message'] = markdown.markdown(r[0], extensions=['pymdownx.tilde', 'pymdownx.emoji'], extension_configs = {"pymdownx.emoji": {"emoji_generator":pymdownx.emoji.to_alt}})
         usr = query("SELECT * FROM users WHERE nickname = %s", [r[1]])
         if usr[0][6] == "yes":
             json2['user_name'] = "<i class='fa fa-gavel'></i> " + r[1]
@@ -166,7 +167,7 @@ def handle_chat(json, methods=['GET', 'POST']):
     else:
          query("INSERT INTO messages (content, author, channel) VALUES (%s,%s,%s);", (content, author, channel))
     content = content.replace("/shrug", " ¯\\\_(ツ)_/¯")
-    json['message'] = markdown.markdown(content, extensions=['pymdownx.tilde', 'pymdownx.emoji'])
+    json['message'] = markdown.markdown(content, extensions=['pymdownx.tilde', 'pymdownx.emoji'], extension_configs = {"pymdownx.emoji": {"emoji_generator":pymdownx.emoji.to_alt}})
     socketio.emit("chatrecieve", json)
     execbot(content, channel)
 
