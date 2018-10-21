@@ -1,6 +1,6 @@
 /*
 
-	Made by Alexande- who the fuck cares?
+	Made by Alexander :>
 
 */
 
@@ -29,25 +29,31 @@ html,body {
 }
 
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 20px;
 }
 
 ::-webkit-scrollbar-track {
-    background-color: black;
+    background-color: white;
+    border: 8px solid black;
+    border-top: 0;
+    border-bottom: 0;
 }
  
 ::-webkit-scrollbar-thumb {
 	width: 20px;
-    background-color: white; 
+	background-color: white;
+	border: 3px solid black;
+	border-top: 0;
+	border-bottom: 0;
 }
 
-#main {
+.main {
 	height: 100%;
 	width: 100%;
 	overflow: hidden;
 }
 
-#sideBar {
+.sideBar {
 	float: left;
 	height: 100%;
 	width: 250px;
@@ -55,35 +61,35 @@ html,body {
 	border: 5px solid white;
 }
 
-#chatWindow {
+.chatWindow {
 	height: 100%;
-	border: 5px solid white;
+	border-left: 5px solid white;
 }
 
-#chatBox {
+.chatBox {
 	background-color: black;
 	color: white;
 	height: 45px;
-	width: calc(100% - 270px);
+	width: calc(100% - 272px);
 	border-style: solid;
 	border-color: white;
-	border-width: 5px 0 0 0;
+	border-width: 5px 5px 5px 0;
 	padding-left: 10px;
 	padding-right: 10px;
 	position: absolute;
 	left: 265px;
-	bottom: 5px;
+	bottom: 0;
 	font-size: 24px;
 }
 
-#channel {
+.channel {
 	height: 45px;
-	width: 100%;
+	width: calc(100% - 7px);
 	border-style: solid;
 	border-color: white;
-	border-width: 0 0 5px 0;
+	border-width: 5px 5px 5px 0;
 	font-size: 28px;
-	line-height: 40px;
+	line-height: 34px;
 }
 
 .hashtag {
@@ -97,7 +103,7 @@ html,body {
 	user-select: none;
 }
 
-#logo {
+.logo {
 	height: 45px;
 	width: 100%;
 	border-style: solid;
@@ -110,7 +116,7 @@ html,body {
 	user-select: none;
 }
 
-#userInfo {
+.userInfo {
 	height: 45px;
 	width: 240px;
 	border-style: solid;
@@ -124,15 +130,16 @@ html,body {
 	line-height: 40px;
 }
 
-#chat {
+.chat {
 	height: calc(100% - 90px);
 	width: 100%;
-	padding: 10px 5px 5px 10px;
+	overflow-y: auto;
 }
 
 .message {
 	width: 100%;
 	overflow: visible;
+	padding: 0 10px;
 }
 
 .userName {
@@ -152,12 +159,12 @@ html,body {
 	width: auto;
 }
 
-#info {
+.info {
 	height: calc(100% - 90px);
 	width: 100%;
 }
 
-#channelSwitcher {
+.channelSwitcher {
 	height: 45px;
 	width: 240px;
 	background-color: black;
@@ -171,14 +178,14 @@ html,body {
 	padding-right: 10px;
 }
 
-#channelSwitcher + .hashtag {
+.channelSwitcher + .hashtag {
 	position: relative;
 	bottom: 46px;
 	right: 1px;
 	float: none;
 }
 
-#connection {
+.connection {
 	height: calc(100% - 45px);
 	width: 240px;
 	position: relative;
@@ -194,14 +201,14 @@ html,body {
 }
 
 .pingedMessage {
-    background-color: #30aa06;
+    background-color: .30aa06;
 }
 
 .timestamp {
     visibility: hidden;
     width: auto;
     background-color: white;
-    color: #000;
+    color: .000;
     text-align: center;
     border-radius: 5px;
     position: absolute;
@@ -220,4 +227,24 @@ html,body {
 
 .userName:hover .timestamp {
     visibility: visible;
+}
+
+.fa-gavel {
+	color: .30aa06;
+	margin: 0 -4px -4px 0 !important;
+}
+
+.themeSwitcher {
+	background-color: black;
+	color: white;
+	border: 0;
+}
+
+hr {
+	margin: 15px 0;
+}
+
+input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, textarea:-webkit-autofill,textarea:-webkit-autofill:hover textarea:-webkit-autofill:focus, select:-webkit-autofill, select:-webkit-autofill:hover,select:-webkit-autofill:focus {
+	-webkit-text-fill-color: white;
+	-webkit-box-shadow: 0 0 0px 1000px #000 inset;
 }

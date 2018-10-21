@@ -23,13 +23,15 @@ html,body {
 	border: 5px white solid;
 }
 
-#login {
+.login {
 	width: 600px;
-	height: 300px;
+	height: auto;
 	border: 5px white solid;
+	border-bottom: 0;
+	padding-bottom: 70px;
 }
 
-#header {
+.header {
 	height: 45px;
 	width: 100%;
 	border-style: solid;
@@ -44,13 +46,13 @@ html,body {
 	text-align: center;
 }
 
-#loginField {
+.loginField {
 	height: calc(100% - 45px);
 	width: 100%;
 	padding-top: 25px;
 }
 
-#loginField div {
+.loginField div {
 	padding-left: 10px;
 }
 
@@ -65,6 +67,21 @@ input,form {
 	padding-left: 10px;
 }
 
-#userName {
+.userName {
 	margin-bottom: 25px;
+}
+
+.loginButton {
+	position: absolute;
+	bottom: 0;
+	cursor: pointer;
+}
+
+form[method="POST"] {
+	border: 0;
+}
+
+input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, textarea:-webkit-autofill,textarea:-webkit-autofill:hover textarea:-webkit-autofill:focus, select:-webkit-autofill, select:-webkit-autofill:hover,select:-webkit-autofill:focus {
+	-webkit-text-fill-color: white;
+	-webkit-box-shadow: 0 0 0px 1000px #000 inset;
 }

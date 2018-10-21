@@ -5,51 +5,49 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <link rel="shortcut icon" href="https://owo.whats-th.is/221779.ico" type="image/x-icon">
+		<link rel="shortcut icon" href="https://owo.whats-th.is/221779.ico" type="image/x-icon">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="https://www.w3schools.com/w3css/4/w3.css">
 		<link id="currentstyle" rel="stylesheet" type="text/css" href="/static/styles/terminal/style.css" />
-		<style>.fa-gavel {color: #30aa06; margin:0 -4px -4px 0 !important;}</style>
 		<title>PyChat | #{{ channel }}</title>
 		
 	</head>
-	<body id="main" class="w3-row" onbeforeunload="socket.emit('leave', {'channel' : '{{ channel }}'});">
-		<div id="sideBar">
-			<div id="logo">PyChat v0.5</div>
-			<div id="info">
+	<body class="w3-row main" onbeforeunload="socket.emit('leave', {'channel' : '{{ channel }}'});">
+		<div class="sideBar">
+			<div class="logo">PyChat v0.5</div>
+			<div class="info">
 				<form class="gay" action="/chanswitch" method="POST">
-				<input name="channel" id="channelSwitcher" placeholder="Change channel..." type="text" maxlength="10" /><div class="hashtag">#</div>
+				<input name="channel" class="channelSwitcher" placeholder="e.g. general" type="text" maxlength="50" /><div class="hashtag">#</div>
 			</form>
-				<div id="connection">
-					<div id="ping">NaN<div class="REE">Latency:</div></div>
-					<div id="ip">{{ ip }}<div class="REE">IP:</div></div>
-                    <a href="/logout">Logout</a> <br />
-                    <a href="/m/chat/general">Switch to Mobile</a>
-                    <div style="margin-top: 40px;">Theme:</div>
-                    <select id="coverageSelector">
-                        <option value="terminal">Terminal</option>
-                        <option value="pyide">PyIDE</option>
-                        <option value="mint">Mint</option>
-                        <option value="leenux">Leenux</option>
-                        <option value="matrix">Matrix</option>
-                        <option value="skeuomorph">Skeuomorph</option>
-                    </select>
-                    <div class="users" id="users" style="margin-top: 40px;">Current Users: <br /></div>
+				<div class="connection">
+					<div>{{ ip }}<div class="REE">IP:</div></div>
+					<a href="/logout">Logout</a><br />
+					<a href="/m/chat/general">Switch to Mobile</a>
+					<div style="margin-top: 40px;">Theme:</div>
+					<select id="coverageSelector" class="themeSwitcher">
+						<option value="terminal">Terminal</option>
+						<option value="pyide">PyIDE</option>
+						<option value="mint">Mint</option>
+						<option value="leenux">Leenux</option>
+						<option value="matrix">Matrix</option>
+						<option value="skeuomorph">Skeuomorph</option>
+					</select>
+					<div class="users" style="margin-top: 40px;">Users online: <br /></div>
 				</div>
 			</div>
 			
-			<div id="userInfo">{{ username }}</div>
+			<div class="userInfo">{{ username }}</div>
 		</div>
-		<div id="chatWindow" class="w3-rest">
-			<div id="channel"><div class="hashtag">#</div>{{ channel }}</div>
-				<div class="chat" id="chat" style="overflow-y: scroll;">
+		<div class="w3-rest chatWindow">
+			<div class="channel"><div class="hashtag">#</div>{{ channel }}</div>
+				<div id="chat" class="chat">
 
-					<p class="none">There have not been any messages since you joined.</p>
+					<p class="none">There have not been any messages in #{{ channel }} since you joined.</p>
 					
 				</div>
 			<form class="biggay" action="" method="POST">
-			<input class="chatBox" id="chatBox" placeholder="Message #{{ channel }}..." type="text" autofocus autocomplete="off"/>
-			<input type="submit">
+			<input class="chatBox" placeholder="Message #{{ channel }}" type="text" autofocus autocomplete="off"/>
+			<input style="display: none;" type="submit">
 			</form>
 		</div>
 	</body>
@@ -59,7 +57,7 @@
         coverageSelector.onchange = function (e) {
             var selectedOption = this[this.selectedIndex];
             var selectedText = selectedOption.text;
-            var theCss = document.getElementById('currentstyle');
+            var theCss = document.querySelector("#currentstyle")
             theCss.href = "/static/styles/" + selectedText.toLowerCase() + "/style.css"
     };
     </script>
@@ -126,6 +124,8 @@
       }
   });
 
+  var pingSound = new Audio("/static/sounds/ding.wav");
+  
   socket.on( 'chatrecieve', function( msg ) {
     console.log("Recieved msg.")
     console.log(msg.message)
@@ -136,13 +136,12 @@
       if( msg.channel !== "{{ channel }}") {return;}
       else {
         if(mesg.includes("@{{ username }}")) {
-          $( 'div#chat' ).append( '<div class="message"><div class="userName">'+msg.user_name+'<div class="timestamp">'+msg.timestamp+'</div></div><div class="arrow">></div><div class="messageContent pingedMessage">'+mesg+'</div></div>' );
-          var audio = new Audio("/static/sounds/ding.wav");
-          audio.play();
+          $( 'div#chat' ).append( '<div class="message pingedMessage"><div class="userName">'+msg.user_name+'<div class="timestamp">'+msg.timestamp+'</div></div><div class="arrow">></div><div class="messageContent">'+mesg+'</div></div>' );
+          pingSound.play();
         } else {
           $( 'div#chat' ).append( '<div class="message"><div class="userName">'+msg.user_name+'<div class="timestamp">'+msg.timestamp+'</div></div><div class="arrow">></div><div class="messageContent">'+mesg+'</div></div>' );
         }
-        var theDiv = document.getElementById('chat');
+        var theDiv = document.querySelector("#chat")
         theDiv.scrollTop = theDiv.scrollHeight;
         }
     }
@@ -156,7 +155,7 @@
           var mesg = urlify(msg.message);
           var mesg = mesg.replace("</p>", "");
           if(mesg.includes("@{{ username }}")) {
-          $( 'div#chat' ).append( '<div class="message"><div class="userName">'+msg.user_name+'<div class="timestamp">'+msg.timestamp+'</div></div><div class="arrow">></div><div class="messageContent pingedMessage">'+mesg+'</div></div>');
+          $( 'div#chat' ).append( '<div class="message" pingedMessage><div class="userName">'+msg.user_name+'<div class="timestamp">'+msg.timestamp+'</div></div><div class="arrow">></div><div class="messageContent">'+mesg+'</div></div>');
         } else {
           $( 'div#chat' ).append( '<div class="message"><div class="userName">'+msg.user_name+'<div class="timestamp">'+msg.timestamp+'</div></div><div class="arrow">></div><div class="messageContent">'+mesg+'</div></div>' );
         }
@@ -178,7 +177,8 @@
     })
     // or alternatively
     // return text.replace(urlRegex, '<a href="$1">$1</a>')
-}</script>
+}
+</script>
 
 
 </html>
