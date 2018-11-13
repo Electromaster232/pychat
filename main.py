@@ -205,10 +205,14 @@ def handle_chat(json, methods=['GET', 'POST']):
     content = content.replace('<','&lt;').replace('>','&gt;')
     content = content.strip("#")
     content = content.strip("`")
+    channels = query("SELECT * FROM privatechannels WHERE channame = %s", [channel])
     if content.isspace() or content == "":
         return
     if json['group'] == "yes":
-         query("INSERT INTO privatemessages (content, author, channel) VALUES (%s,%s,%s);", (content, author, channel))
+         if channels[0][1] == "yes":
+             pass
+         else:
+            query("INSERT INTO privatemessages (content, author, channel) VALUES (%s,%s,%s);", (content, author, channel))
     else:
          query("INSERT INTO messages (content, author, channel) VALUES (%s,%s,%s);", (content, author, channel))
     content = content.replace("/shrug", " ¯\\\_(ツ)_/¯")
@@ -304,6 +308,24 @@ def joinree(json):
         socketio.emit("userconn", json3)
 
 
+# D e s t r u c t i v e  m e s s a g e s
+@app.route("destructionon/<string:channel>")
+def deson(channel):
+    channel = query("SELECT * FROM privatechannels WHERE authkey = %s", [channel])
+    channelt = channel[0][1]
+    json4 = {}
+    json4['channel'] = channelt
+    socketio.emit("deson", json4)
+
+@app.route("destructionoff/<string:channel>")
+def desoff(channel):
+    channel = query("SELECT * FROM privatechannels WHERE authkey = %s", [channel])
+    channelt = channel[0][1]
+    json4 = {}
+    json4['channel'] = channelt
+    socketio.emit("desoff", json4)
+
+
 # When a user leaves :(
 @socketio.on("leave")
 def leave(json2):
@@ -354,4 +376,5 @@ if __name__ == '__main__':
         pbkdf2_sha256__default_rounds=30000
     )
     joined = {}
+    currentchannels = {}
     socketio.run(app)
