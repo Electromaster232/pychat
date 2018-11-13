@@ -205,11 +205,11 @@ def handle_chat(json, methods=['GET', 'POST']):
     content = content.replace('<','&lt;').replace('>','&gt;')
     content = content.strip("#")
     content = content.strip("`")
-    channels = query("SELECT * FROM privatechannels WHERE channame = %s", [channel])
+    channels = query("SELECT * FROM privatechannels WHERE channame = %s", [channel.strip("g-")])
     if content.isspace() or content == "":
         return
     if json['group'] == "yes":
-         if channels[0][1] == "yes":
+         if channels[0][4] == "yes":
              pass
          else:
             query("INSERT INTO privatemessages (content, author, channel) VALUES (%s,%s,%s);", (content, author, channel))
@@ -309,20 +309,20 @@ def joinree(json):
 
 
 # D e s t r u c t i v e  m e s s a g e s
-@app.route("destructionon/<string:channel>")
+@app.route("/destructionon/<string:channel>")
 def deson(channel):
     channel = query("SELECT * FROM privatechannels WHERE authkey = %s", [channel])
     channelt = channel[0][1]
     json4 = {}
-    json4['channel'] = channelt
+    json4['channel'] = "g-" + channelt
     socketio.emit("deson", json4)
 
-@app.route("destructionoff/<string:channel>")
+@app.route("/destructionoff/<string:channel>")
 def desoff(channel):
     channel = query("SELECT * FROM privatechannels WHERE authkey = %s", [channel])
     channelt = channel[0][1]
     json4 = {}
-    json4['channel'] = channelt
+    json4['channel'] = "g-" + channelt
     socketio.emit("desoff", json4)
 
 
