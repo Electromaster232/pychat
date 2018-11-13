@@ -115,6 +115,23 @@
       }
   });
 
+  socket.on('deson', function(json) {
+      if(json.channel !== "{{ channel }}") {
+          return;
+      }
+      else {
+          alert("Message destruction is now enabled in this channel.");
+      }
+  });
+
+  socket.on('desoff', function(json) {
+      if(json.channel !== "{{ channel }}") {
+          return;
+      }
+      else {
+          alert("Message destruction is no longer enabled in this channel.");
+      }
+  });
 // byeUser
   socket.on( 'userdiss', function( user ) {
       console.log('diss '+user.channel+":"+user.author);
