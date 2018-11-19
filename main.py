@@ -232,6 +232,7 @@ def signup():
             return "Sorry, but you're missing something. Go back and try again"
         username = request.form['username'].replace("<", "")
         username = username.replace(">", "")
+        username = username.lower()
         iftehuser = query("SELECT * FROM users WHERE nickname = %s", [username])
         if username in iftehuser:
             return "Sorry, someone already has that username. Go back and pick another"
