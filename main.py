@@ -32,10 +32,11 @@ def chanswitch():
     if request.method == "GET":
         return "Invalid Request."
     if request.method == "POST":
+        channel = request.form['channel'].lower()
         if "g-" in request.form['channel']:
-            return redirect("/group/" + request.form['channel'].strip('g').strip('-'))
+            return redirect("/group/" + channel.strip('g').strip('-'))
         else:
-            return redirect("/chat/" + request.form['channel'])
+            return redirect("/chat/" + channel)
 
 
 
