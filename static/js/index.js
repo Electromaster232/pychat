@@ -1,7 +1,7 @@
   // Generate the user private channel
   var channel = generateUserChannel();
 
-  document.addEventListener("DOMContentLoaded", function() {
+  function startshit() {
 
     // In this example we are using a demo Realtime application key without any security
     // so you should replace it with your own appkey and follow the guidelines
@@ -56,7 +56,7 @@
       // Establish the connection
       client.connect(RealtimeAppKey, 'JustAnyRandomToken');  
     });    
-});
+};
 
 // generate a GUID
 function S4() {
@@ -77,7 +77,7 @@ function generateUserChannel(){
 
 // send a message to the user private channel to trigger a push notification
 function send(){
-  if (client) {
+  if (window.client) {
     client.send(channel, "This is a web push notification sent using the Realtime JavaScript SDK");
   };
 }
