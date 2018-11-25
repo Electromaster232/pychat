@@ -1,7 +1,7 @@
   // Generate the user private channel
   var channel = generateUserChannel();
 
-  $(document).ready(function() {
+  document.addEventListener("DOMContentLoaded", function() {
 
     // In this example we are using a demo Realtime application key without any security
     // so you should replace it with your own appkey and follow the guidelines
@@ -19,7 +19,13 @@
         
         if(error.message) {
           alert(error.message);
-        }       
+        } else {
+          alert("Ooops! It seems this browser doesn't support Web Push Notifications :(");
+        }
+        
+        $("#curl").html("Oops! Something went wrong. It seems your browser does not support Web Push Notifications.<br><br>Error:<br>" + error.message);
+        $("#sendButton").text("No can do ... this browser doesn't support web push notifications");
+        $("#sendButton").css("background-color","red");
       };
      
       // Create Realtime Messaging client
@@ -70,8 +76,8 @@ function generateUserChannel(){
 }
 
 // send a message to the user private channel to trigger a push notification
-function send(content){
+function send(){
   if (client) {
-    client.send(channel, content);
+    client.send(channel, "This is a web push notification sent using the Realtime JavaScript SDK");
   };
 }
