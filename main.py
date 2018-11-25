@@ -34,7 +34,7 @@ def chanswitch():
     if request.method == "POST":
         channel = request.form['channel'].lower()
         if "g-" in request.form['channel']:
-            return redirect("/group/" + channel.strip('g').strip('-'))
+            return redirect("/group/" + channel.strip('g-'))
         else:
             return redirect("/chat/" + channel)
 
@@ -192,6 +192,8 @@ def handle_chat(json, methods=['GET', 'POST']):
     f = '%d/%m/%Y %H:%M:%S'
     content = json['message']
     channel = json['channel']
+    if not channel == joined[json['user_name']]:
+         return
     token = request.cookies.get("pychatToken")
     users = query("SELECT * FROM users WHERE token = %s", [token])
     if channel == "rules" or channel == "announcements":
@@ -199,6 +201,9 @@ def handle_chat(json, methods=['GET', 'POST']):
     if users[0][5] == "yes":
         return
     json['user_name'] = users[0][0]
+    if "g-" in channel:
+         if users[0][0] not in str(query("SELECT * FROM privatechannels WHERE channame = %s", [channel.strip("g-")])):
+              return
     author = json['user_name']
     if users[0][6] == "yes":
         json['user_name'] = "<i class='fa fa-gavel'></i> " + author
@@ -218,7 +223,11 @@ def handle_chat(json, methods=['GET', 'POST']):
          query("INSERT INTO messages (content, author, channel) VALUES (%s,%s,%s);", (content, author, channel))
     content = content.replace("/shrug", " ¯\\\_(ツ)_/¯")
     json['message'] = markdown.markdown(content, extensions=['pymdownx.tilde', 'pymdownx.emoji'], extension_configs = {"pymdownx.emoji": {"emoji_generator":pymdownx.emoji.to_alt}})
-    socketio.emit("chatrecieve", json)
+    for k, r in sockettokens.items():
+        if r == channel:
+             socketio.emit('chatrecieve', json, room=k)
+        else:
+             pass
     execbot(content, channel)
 
 
@@ -285,6 +294,15 @@ def execbot(content, channel):
 @socketio.on("joinree")
 def joinree(json):
     channel = json['channel']
+    if "/group/" in request.referrer:
+        re1 = channel.strip("g-")
+        re1 = "/group/" + re1
+        if not re1 in request.referrer:
+            return
+    if "/chat/" in request.referrer:
+        re1 = "/chat/" + channel
+        if not re1 in request.referrer:
+            return
     user = request.cookies.get("pychatToken")
     users = query("SELECT * FROM users WHERE token = %s", [user])
     json2 = {}
@@ -296,6 +314,8 @@ def joinree(json):
     socketio.emit("userconn", json2)
     try:
          joined[users[0][0]] = channel
+         print(request.sid)
+         sockettokens[request.sid] = channel
     except KeyError:
          pass
     for r, v in joined.items():
@@ -378,5 +398,5 @@ if __name__ == '__main__':
         pbkdf2_sha256__default_rounds=30000
     )
     joined = {}
-    currentchannels = {}
+    sockettokens = {}
     socketio.run(app)

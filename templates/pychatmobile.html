@@ -6,6 +6,10 @@
 <link id="currentstyle" rel="stylesheet" type="text/css" href="/static/styles/terminal/pychatmobile.css" />
 <link rel="stylesheet" type="text/css" href="https://www.w3schools.com/w3css/4/w3.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<link rel="manifest" href="/static/js/manifest.json">  
+<script src="//messaging-public.realtime.co/js/2.1.0/ortc.js"></script>
+<!-- THESE FILES ARE ONLY REQUIRED FOR THE CURRENT EXAMPLE -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>  
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,6 +32,20 @@
 <input type="submit">
 			</form>
 </div>
+ <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCNtA3_8zEYzIiLH864V5l9td87sjOB0cw",
+    authDomain: "pychat-mobile.firebaseapp.com",
+    databaseURL: "https://pychat-mobile.firebaseio.com",
+    projectId: "pychat-mobile",
+    storageBucket: "pychat-mobile.appspot.com",
+    messagingSenderId: "36173969601"
+  };
+  firebase.initializeApp(config);
+</script>
+<script src="/static/js/WebPushManager.js"></script>
 <script type="text/javascript">
 	$('.dabblox').click(function(){
 		var new_chan = prompt("Enter the channel to switch to");
@@ -97,6 +115,7 @@
           $( 'div#chat' ).append( '<div class="message"><div class="userName">'+msg.user_name+'<div class="timestamp">'+msg.timestamp+'</div></div><div class="arrow">></div><div class="messageContent pingedMessage">'+mesg+'</div></div>' );
           var audio = new Audio("/static/sounds/ding.wav");
           audio.play();
+          send(mesg.content);
         } else {
           $( 'div#chat' ).append( '<div class="message"><div class="userName">'+msg.user_name+'<div class="timestamp">'+msg.timestamp+'</div></div><div class="arrow">></div><div class="messageContent">'+mesg+'</div></div>' );
         }
@@ -136,6 +155,82 @@
     })
     // or alternatively
     // return text.replace(urlRegex, '<a href="$1">$1</a>')
+}</script>
+<script>  var channel = generateUserChannel();
+
+  $(document).ready(function() {
+
+    // In this example we are using a demo Realtime application key without any security
+    // so you should replace it with your own appkey and follow the guidelines
+    // to configure it
+    var RealtimeAppKey = "6kpKdl";
+
+    // update the UI  
+      
+    // start Web Push Manager to obtain device id and register it with Realtime
+    // a service worker will be launched in background to receive the incoming push notifications
+    var webPushManager = new WebPushManager();
+
+    webPushManager.start(function(error, registrationId){
+      if (error) {
+        
+        if(error.message) {
+          alert(error.message);
+        }       
+      };
+     
+      // Create Realtime Messaging client
+      client = RealtimeMessaging.createClient();
+      client.setClusterUrl('https://ortc-developers.realtime.co/server/ssl/2.1/');
+    
+      client.onConnected = function (theClient) {
+        // client is connected
+
+        // subscribe users to their private channels
+        theClient.subscribeWithNotifications(channel, true, registrationId,
+            function (theClient, channel, msg) {
+              // while you are browsing this page you'll be connected to Realtime
+              // and receive messages directly in this callback
+              console.log("Received a message from the Realtime server:", msg);
+
+              // Since the service worker will only show a notification if the user
+              // is not browsing your website you can force a push notification to be displayed.
+              // For most use cases it would be better to change the website UI by showing a badge
+              // or any other form of showing the user something changed instead
+              // of showing a pop-up notification.
+              // Also consider thar if the user has severals tabs opened it will see a notification for
+              // each one ...
+              webPushManager.forceNotification(msg);
+            });
+      };
+    
+      // Establish the connection
+      client.connect(RealtimeAppKey, 'JustAnyRandomToken');  
+    });    
+});
+
+// generate a GUID
+function S4() {
+  return (((1+Math.random())*0x10000)|0).toString(16).substring(1); 
+}
+
+// generate the user private channel and save it at the local storage
+// so we always use the same channel for each user
+function generateUserChannel(){
+  userChannel = localStorage.getItem("channel");
+  if (userChannel == null || userChannel == "null"){ 
+      guid = (S4() + S4() + "-" + S4() + "-4" + S4().substr(0,3) + "-" + S4() + "-" + S4() + S4() + S4()).toLowerCase();               
+      userChannel = 'channel-' + guid;
+      localStorage.setItem("channel", userChannel);
+  }
+  return userChannel;
+}
+
+// send a message to the user private channel to trigger a push notification
+function send(content){
+  if (client) {
+    client.send(channel, content);
+  };
 }</script>
 </body>
 </html>
