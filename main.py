@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template, make_response, session
+from flask import Flask, request, redirect, render_template, make_response, session, send_from_directory
 from flask_socketio import SocketIO
 import MySQLdb
 import requests
@@ -363,6 +363,43 @@ def leave(json2):
     json['author'] = user[0][0]
     json['channel'] = json2['channel']
     socketio.emit("userdiss", json)
+
+
+
+# These seeminly random paths are required for mobile so don't touch m8
+@app.route("/m/chat/index.js")
+def indexjs():
+     return send_from_directory("static/js", "index.js")
+
+@app.route("/m/chat/manifest.json")
+def manifest():
+     return send_from_directory("static/js", "manifest.json")
+
+@app.route("/m/chat/service-worker.js")
+def srvworker():
+     return send_from_directory("static/js", "service-worker.js")
+
+@app.route("/m/chat/WebPushManager.js")
+def webpushmgr():
+     return send_from_directory("static/js", "WebPushManager.js")
+
+
+# Same but for private
+@app.route("/m/group/index.js")
+def indexjsp():
+     return send_from_directory("static/js", "index.js")
+
+@app.route("/m/group/manifest.json")
+def manifestp():
+     return send_from_directory("static/js", "manifest.json")
+
+@app.route("/m/group/service-worker.js")
+def srvworkerp():
+     return send_from_directory("static/js", "service-worker.js")
+
+@app.route("/m/group/WebPushManager.js")
+def webpushmgrp():
+     return send_from_directory("static/js", "WebPushManager.js")
 
 # Misc Functions
 

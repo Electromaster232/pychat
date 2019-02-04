@@ -4,7 +4,7 @@ var WebPushManager = function(){
 
 WebPushManager.prototype.start = function(callback) {
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/static/js/service-worker.js')
+    navigator.serviceWorker.register('service-worker.js')
       .then(this.getRegistrationId(callback));
   } else {
     callback('Service workers aren\'t supported in this browser.', null);

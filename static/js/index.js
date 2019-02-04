@@ -1,7 +1,7 @@
   // Generate the user private channel
   var channel = generateUserChannel();
 
-  function startshit() {
+  $(document).ready(function() {
 
     // In this example we are using a demo Realtime application key without any security
     // so you should replace it with your own appkey and follow the guidelines
@@ -9,6 +9,8 @@
     var RealtimeAppKey = "6kpKdl";
 
     // update the UI  
+    //$('#curl').text('curl "http://ortc-developers-useast1-s0001.realtime.co/send" --data "AK=' + RealtimeAppKey + '&AT=SomeToken&C=' + channel + '&M=12345678_1-1_This is a web push notification sent using the Realtime REST API"');
+    //$('#channel').text(channel);
       
     // start Web Push Manager to obtain device id and register it with Realtime
     // a service worker will be launched in background to receive the incoming push notifications
@@ -55,10 +57,8 @@
     
       // Establish the connection
       client.connect(RealtimeAppKey, 'JustAnyRandomToken');  
-
-      return client;
     });    
-};
+});
 
 // generate a GUID
 function S4() {
@@ -78,8 +78,8 @@ function generateUserChannel(){
 }
 
 // send a message to the user private channel to trigger a push notification
-function send(){
-  if (window.client) {
-    client.send(channel, "This is a web push notification sent using the Realtime JavaScript SDK");
+function send(content){
+  if (client) {
+    client.send(channel, content);
   };
 }
