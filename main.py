@@ -304,6 +304,8 @@ def joinree(json):
         if not re1 in request.referrer:
             return
     user = request.cookies.get("pychatToken")
+    if user == "":
+        user = json['token']
     users = query("SELECT * FROM users WHERE token = %s", [user])
     json2 = {}
     json2['author'] = users[0][0]
