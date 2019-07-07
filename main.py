@@ -194,7 +194,10 @@ def handle_chat(json, methods=['GET', 'POST']):
     channel = json['channel']
     if not channel == joined[json['user_name']]:
          return
-    token = request.cookies.get("pychatToken")
+    if json['token'] == "":
+         token = request.cookies.get("pychatToken")
+    else:
+         token = json['token']
     users = query("SELECT * FROM users WHERE token = %s", [token])
     if channel == "rules" or channel == "announcements":
          return
@@ -293,22 +296,31 @@ def execbot(content, channel):
 # Join messages
 @socketio.on("joinree")
 def joinree(json):
+    print("gotcha")
     channel = json['channel']
-    if "/group/" in request.referrer:
+    if request.referrer:
+       ree3 = request.referrer
+    else:
+       ree3 = json['referrer']
+    if "/group/" in ree3:
         re1 = channel.strip("g-")
         re1 = "/group/" + re1
-        if not re1 in request.referrer:
+        if not re1 in ree3:
             return
-    if "/chat/" in request.referrer:
+    if "/chat/" in ree3:
         re1 = "/chat/" + channel
-        if not re1 in request.referrer:
+        if not re1 in ree3:
             return
-    user = request.cookies.get("pychatToken")
-    if user == "":
+    if json['token'] == "":
+        user = request.cookies.get("pychatToken")
+    else:
         user = json['token']
     users = query("SELECT * FROM users WHERE token = %s", [user])
     json2 = {}
+    print(json['token'])
+    print(user)
     json2['author'] = users[0][0]
+    print("gotcha2")
     if users[0][6] == "yes":
         json2['staff'] = "yes"
     json2['channel'] = channel
@@ -321,6 +333,7 @@ def joinree(json):
     except KeyError:
          pass
     for r, v in joined.items():
+        print("gotcha3")
         user2 = query("SELECT * FROM users WHERE nickname = %s", [r])
         json3 = {}
         print("Sent user" + r)
@@ -438,4 +451,4 @@ if __name__ == '__main__':
     )
     joined = {}
     sockettokens = {}
-    socketio.run(app)
+    socketio.run(app, host="0.0.0.0")

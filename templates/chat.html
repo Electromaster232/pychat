@@ -80,7 +80,7 @@
   var socket = io.connect('https://' + document.domain + ':' + location.port);
   console.log("Connected successfully.")
   sendprevmsg();
-  socket.emit('joinree', {user_name:"{{ username }}", channel:"{{ channel }}", key:"{{ key }}"});
+  socket.emit('joinree', {user_name:"{{ username }}", channel:"{{ channel }}", key:"{{ key }}", token:""});
     var form = $( 'form.biggay' ).on( 'submit', function( e ) {
       e.preventDefault()
       let user_input = $( 'input#chatBox' ).val()
@@ -88,7 +88,8 @@
         user_name : "{{ username }}",
         message : user_input,
         channel : "{{ channel }}",
-        group : "{{ group }}"
+        group : "{{ group }}",
+        token: ""
       } )
       $( 'input#chatBox' ).val( '' ).focus()
     } );
