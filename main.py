@@ -1,7 +1,7 @@
 from flask import Flask, request, redirect, render_template, make_response, session, send_from_directory
 from flask_socketio import SocketIO
 import MySQLdb
-import requests
+import unicodedata
 import markdown
 import random
 import datetime
@@ -11,7 +11,8 @@ import secrets
 import re
 from config import Config
 import pymdownx.emoji
-
+import base64
+import requests
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'odL1}0a=}E:ybjfY.%rH"Ys5?6;J<^'
@@ -38,7 +39,10 @@ def chanswitch():
         else:
             return redirect("/chat/" + channel)
 
-
+def strip_accents(text):
+    return "".join(char for char in
+                   unicodedata.normalize('NFKD', text)
+                   if unicodedata.category(char) != 'Mn')
 
 # Send messages from previous chat sessions
 @socketio.on("getprevmsg")
@@ -225,13 +229,29 @@ def handle_chat(json, methods=['GET', 'POST']):
     else:
          query("INSERT INTO messages (content, author, channel) VALUES (%s,%s,%s);", (content, author, channel))
     content = content.replace("/shrug", " ¯\\\_(ツ)_/¯")
+    content = strip_accents(content)
     json['message'] = markdown.markdown(content, extensions=['pymdownx.tilde', 'pymdownx.emoji'], extension_configs = {"pymdownx.emoji": {"emoji_generator":pymdownx.emoji.to_alt}})
     for k, r in sockettokens.items():
         if r == channel:
              socketio.emit('chatrecieve', json, room=k)
         else:
              pass
-    execbot(content, channel)
+
+@socketio.on("image")
+def imagehandler(json, methods=["GET", "POST"]):
+     ree = base64.b64decode(json)
+     f = open('myimage.jpeg', 'wb')
+     f.write(ree)
+     f.close()
+     files = {'file': open("myimage.jpeg", "rb")}
+     response = requests.post("https://cdn.thanoscar.club/upload/9e29cc9178e37f5e91d9519cb9c44031bc1e8fea",
+                                 files=files)
+     client = request.sid
+     json2 = {}
+     json2['url'] = response.url
+     socketio.emit("imageurl", json2, room=client)
+     print(response.url)
+
 
 
 # Signup
@@ -264,34 +284,6 @@ def logout():
     return resp
 
 ### BEGIN BOT
-
-def execbot(content, channel):
-    print("starting execbot")
-    if "/ping" in content:
-        json2 = {}
-        json2['user_name'] = "b1nzy"
-        json2['message'] = "Pong!"
-        json2['channel'] = channel
-        socketio.emit("chatrecieve", json2)
-    elif "/history" in content:
-        content = content.replace("/history ", "")
-        content = int(content)
-        list = query("SELECT * FROM messages WHERE channel = %s ORDER BY id DESC LIMIT %s", (channel, content))
-        list2 = ""
-        for r in list:
-            list2 = list2 + "\n{}: {}".format(r[1], r[0])
-        with open('error.txt', 'w') as file:
-            file.write(list2)
-        files = {'file': open("error.txt", "rb")}
-        response = requests.post("https://dj-electro.me/upload/ba2cfcff45ad1f470af2ab3ab96d3248037e6c41",
-                                 files=files)
-        json2 = {}
-        json2['user_name'] = "b1nzy"
-        json2['message'] = response.url
-        json2['channel'] = channel
-        socketio.emit("chatrecieve", json2)
-    else:
-        return
 
 # Join messages
 @socketio.on("joinree")
