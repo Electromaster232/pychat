@@ -1,5 +1,4 @@
 <!doctype html>
-<!-- For Pauli, because you just *had to complain*, didn't you? -->
 <html>
 <head>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -14,7 +13,6 @@
   <script src="//messaging-public.realtime.co/js/2.1.0/ortc.js"></script>
 
   
-  <!-- THESE FILES ARE ONLY REQUIRED FOR THE CURRENT EXAMPLE -->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>  
   <script src="index.js"></script>
 <style>.fa-gavel {color: #30aa06; margin:0 -3px -4px 0 !important;}</style>
@@ -160,14 +158,9 @@
 <script>function urlify(text) {
     var urlRegex = /(https?:\/\/[^\s]+)/g;
     return text.replace(urlRegex, function(url) {
-        //if(url.match(/\.(jpeg|jpg|gif|png)$/) != null) {
-        //    $( 'div#chat' ).append( "<img src="+url+">" );
-        //}
 	urlToEncode = url.replace("</p>", "")
         return '<a href="' + encodeURI(urlToEncode) + '" target="_blank">' + url + '</a>';
     })
-    // or alternatively
-    // return text.replace(urlRegex, '<a href="$1">$1</a>')
 }</script>
 </body>
 </html>
